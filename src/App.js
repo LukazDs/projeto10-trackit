@@ -1,10 +1,9 @@
-import logo from './logo.svg';
-import './App.css';
+import "./assets/styles/reset.css"
+import "./assets/styles/styles.css"
+import logo from "./assets/images/logo.svg"
 
 function App() {
-  return (
-
-  );
+  return (<span>Aplicação</span>);
 }
 
 export default App;
