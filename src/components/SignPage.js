@@ -28,7 +28,8 @@ export default function SignPage() {
             password,
         })
 
-        promise.then(() => {setIsLoading(false); navigate("/")})
+        promise.then(() => { setIsLoading(false); navigate("/") })
+            .catch(err => { setIsLoading(false); alert(err.response.statusText) })
     }
 
     return (

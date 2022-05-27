@@ -26,7 +26,7 @@ export default function LoginPage() {
             setIsLoading(false);
             setToken(res.data.token);
         })
-            .catch(err => {alert(err.message); setIsLoading(false)})
+            .catch(err => {setIsLoading(false); alert(err.response.statusText)})
     }
 
 
