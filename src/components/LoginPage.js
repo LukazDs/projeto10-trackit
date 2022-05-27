@@ -1,16 +1,29 @@
+import axios from 'axios';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import logo from "../assets/images/logo.svg"
+import Loading from './loaders/Loading';
 
 export default function LoginPage() {
 
     const [email, setEmail] = React.useState("")
     const [password, setPassword] = React.useState("")
+    const [token, setToken] = React.useState("")
+    const [isLoading, setIsLoading] = React.useState(false)
 
     function login (event) {
         event.preventDefault()
-        console.log("foi")
+
+        setIsLoading(true)
+
+        const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login"
+        const body = { email, password }
+        
+        const promise = axios.post(URL, body)
+
+        promise.then(res => {setIsLoading(false); setToken(res.data.token); console.log(res.data)})
+        .catch(err => err.message)
     }
 
 
@@ -21,7 +34,7 @@ export default function LoginPage() {
             <Forms onSubmit={login}>
             <input type="email" onChange={e => setEmail(e.target.value)} value={email} placeholder='email' required></input>
                 <input type="text" onChange={e => setPassword(e.target.value)} value={password} placeholder='senha' required></input>
-                <button>Entrar</button>
+                <button>{isLoading ? <Loading /> : "Entrar"}</button>
             </Forms>
             <Link to="/cadastro">Não tem uma conta? Cadastre-se!</Link>
         </Container>
@@ -71,6 +84,9 @@ const Forms = styled.form`
     button {
         width: 303px;
         height: 45px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         background: #52B6FF;
         border-radius: 5px;
         box-sizing: border-box;
