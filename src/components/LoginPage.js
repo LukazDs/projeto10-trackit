@@ -26,7 +26,7 @@ export default function LoginPage() {
             setIsLoading(false);
             setToken(res.data.token);
         })
-            .catch(err => err.message)
+            .catch(err => {alert(err.message); setIsLoading(false)})
     }
 
 
@@ -35,17 +35,19 @@ export default function LoginPage() {
         <Container style={{ background: `${isLoading ? "#E5E5E5" : "#FFFFFF"}` }}>
             <img src={logo} />
             <Forms onSubmit={login}>
-                <input style={
-                    { background: `${isLoading ? "#F2F2F2" : "#FFFFFF"}` }}
+                <input 
+                    style={{ background: `${isLoading ? "#F2F2F2" : "#FFFFFF"}` }}
                     type="email" onChange={e => setEmail(e.target.value)}
                     value={email}
+                    disabled={isLoading}
                     placeholder='email' required></input>
-                <input style={
-                    { background: `${isLoading ? "#F2F2F2" : "#FFFFFF"}` }}
+                <input 
+                    style={{ background: `${isLoading ? "#F2F2F2" : "#FFFFFF"}` }}
                     type="password" onChange={e => setPassword(e.target.value)}
                     value={password}
+                    disabled={isLoading}
                     placeholder='senha' required></input>
-                <button style={{ background: `${isLoading ? "#52B6FF" : "#52B6FF"}` }}>{isLoading ? <Loading /> : "Entrar"}</button>
+                <button disabled={isLoading} style={{ background: `${isLoading ? "#52B6FF" : "#52B6FF"}` }}>{isLoading ? <Loading /> : "Entrar"}</button>
             </Forms>
             <Link to="/cadastro">Não tem uma conta? Cadastre-se!</Link>
         </Container>
