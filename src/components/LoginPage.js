@@ -12,29 +12,40 @@ export default function LoginPage() {
     const [token, setToken] = React.useState("")
     const [isLoading, setIsLoading] = React.useState(false)
 
-    function login (event) {
+    function login(event) {
         event.preventDefault()
 
         setIsLoading(true)
 
         const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login"
         const body = { email, password }
-        
+
         const promise = axios.post(URL, body)
 
-        promise.then(res => {setIsLoading(false); setToken(res.data.token); console.log(res.data)})
-        .catch(err => err.message)
+        promise.then(res => {
+            setIsLoading(false);
+            setToken(res.data.token);
+        })
+            .catch(err => err.message)
     }
 
 
     return (
 
-        <Container>
+        <Container style={{ background: `${isLoading ? "#E5E5E5" : "#FFFFFF"}` }}>
             <img src={logo} />
             <Forms onSubmit={login}>
-            <input type="email" onChange={e => setEmail(e.target.value)} value={email} placeholder='email' required></input>
-                <input type="text" onChange={e => setPassword(e.target.value)} value={password} placeholder='senha' required></input>
-                <button>{isLoading ? <Loading /> : "Entrar"}</button>
+                <input style={
+                    { background: `${isLoading ? "#F2F2F2" : "#FFFFFF"}` }}
+                    type="email" onChange={e => setEmail(e.target.value)}
+                    value={email}
+                    placeholder='email' required></input>
+                <input style={
+                    { background: `${isLoading ? "#F2F2F2" : "#FFFFFF"}` }}
+                    type="password" onChange={e => setPassword(e.target.value)}
+                    value={password}
+                    placeholder='senha' required></input>
+                <button style={{ background: `${isLoading ? "#52B6FF" : "#52B6FF"}` }}>{isLoading ? <Loading /> : "Entrar"}</button>
             </Forms>
             <Link to="/cadastro">Não tem uma conta? Cadastre-se!</Link>
         </Container>
@@ -46,11 +57,12 @@ export default function LoginPage() {
 const Container = styled.div`
     width: 375px;
     height: 667px;
-    background: #FFFFFF;
     display: flex;
     flex-direction: column;
-    margin-top: 68px;
     align-items: center;
+    img {
+        margin-top: 68px;
+    }
     a {
         width: 232px;
         height: 17px;
@@ -75,7 +87,6 @@ const Forms = styled.form`
     input {
         width: 303px;
         height: 45px;
-        background: #FFFFFF;
         border: 1px solid #D5D5D5;
         border-radius: 5px;
         box-sizing: border-box;
@@ -87,7 +98,6 @@ const Forms = styled.form`
         display: flex;
         align-items: center;
         justify-content: center;
-        background: #52B6FF;
         border-radius: 5px;
         box-sizing: border-box;
         font-size: 20.976px;
