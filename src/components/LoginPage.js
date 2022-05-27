@@ -4,13 +4,22 @@ import logo from "../assets/images/logo.svg"
 
 export default function LoginPage() {
 
+    const [email, setEmail] = React.useState("")
+    const [password, setPassword] = React.useState("")
+
+    function login (event) {
+        event.preventDefault()
+        console.log("foi")
+    }
+
+
     return (
 
         <Container>
             <img src={logo} />
-            <Forms>
-                <input placeholder='email'></input>
-                <input placeholder='senha'></input>
+            <Forms onSubmit={login}>
+            <input type="email" onChange={e => setEmail(e.target.value)} value={email} placeholder='email' required></input>
+                <input type="text" onChange={e => setPassword(e.target.value)} value={password} placeholder='senha' required></input>
                 <button>Entrar</button>
             </Forms>
             <a href=''>Não tem uma conta? Cadastre-se!</a>

@@ -4,15 +4,25 @@ import logo from "../assets/images/logo.svg"
 
 export default function SignPage () {
 
+    const [name, setName] = React.useState("")
+    const [email, setEmail] = React.useState("")
+    const [image, setImage] = React.useState("")
+    const [password, setPassword] = React.useState("")
+
+    function login (event) {
+        event.preventDefault()
+        console.log("foi")
+    }
+
     return (
 
         <Container>
             <img src={logo} />
-            <Forms>
-                <input placeholder='email'></input>
-                <input placeholder='senha'></input>
-                <input placeholder='nome'></input>
-                <input placeholder='imagem'></input>
+            <Forms onSubmit={login}>
+                <input type="email" onChange={e => setEmail(e.target.value)} value={email} placeholder='email' required></input>
+                <input type="text" onChange={e => setPassword(e.target.value)} value={password} placeholder='senha' required></input>
+                <input type="text" onChange={e => setName(e.target.value)} value={name} placeholder='nome' required></input>
+                <input type="text" onChange={e => setImage(e.target.value)} value={image} placeholder='imagem' required></input>
                 <button>Cadastrar</button>
             </Forms>
             <a href=''>Já tem uma conta? Faça login!</a>
