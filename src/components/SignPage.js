@@ -28,7 +28,7 @@ export default function SignPage() {
             password,
         })
 
-        promise.then(() => {setIsLoading(false)})
+        promise.then(() => {setIsLoading(false); navigate("/")})
     }
 
     return (
