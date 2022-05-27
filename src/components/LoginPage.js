@@ -5,12 +5,14 @@ import styled from 'styled-components';
 import logo from "../assets/images/logo.svg"
 import Loading from './loaders/Loading';
 
+import UserContext from '../context/UserContext';
+
 export default function LoginPage() {
 
     const [email, setEmail] = React.useState("")
     const [password, setPassword] = React.useState("")
-    const [token, setToken] = React.useState("")
     const [isLoading, setIsLoading] = React.useState(false)
+    const {setToken} = React.useContext(UserContext)
 
     function login(event) {
         event.preventDefault()

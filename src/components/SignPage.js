@@ -4,15 +4,18 @@ import logo from "../assets/images/logo.svg";
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import Loading from './loaders/Loading';
+import { useContext } from 'react';
+import UserContext from '../context/UserContext';
 
 export default function SignPage() {
 
     const [name, setName] = React.useState("")
     const [email, setEmail] = React.useState("")
-    const [image, setImage] = React.useState("")
+    const [imageInput, setImageInput] = React.useState("")
     const [password, setPassword] = React.useState("")
     const [isLoading, setIsLoading] = React.useState(false)
     const navigate = useNavigate()
+    const {setImage} = useContext(UserContext)
 
     function login(event) {
         event.preventDefault()
@@ -24,12 +27,12 @@ export default function SignPage() {
             URL, {
             email,
             name,
-            image,
+            image: imageInput,
             password,
         })
 
         promise.then(() => { setIsLoading(false); navigate("/") })
-            .catch(err => { setIsLoading(false); alert(err.response.statusText) })
+            .catch(err => { setIsLoading(false); alert(err.response.statusText); setImage(imageInput) })
     }
 
     return (
@@ -40,7 +43,7 @@ export default function SignPage() {
                 <input disabled={isLoading} type="email" onChange={e => setEmail(e.target.value)} value={email} placeholder='email' required></input>
                 <input disabled={isLoading} type="password" onChange={e => setPassword(e.target.value)} value={password} placeholder='senha' required></input>
                 <input disabled={isLoading} type="text" onChange={e => setName(e.target.value)} value={name} placeholder='nome' required></input>
-                <input disabled={isLoading} type="text" onChange={e => setImage(e.target.value)} value={image} placeholder='imagem' required></input>
+                <input disabled={isLoading} type="text" onChange={e => setImageInput(e.target.value)} value={imageInput} placeholder='imagem' required></input>
                 <button disabled={isLoading} style={{ background: `${isLoading ? "#52B6FF" : "#52B6FF"}` }}>{isLoading ? <Loading /> : "Cadastrar"}</button>
             </Forms>
             <Link to="/">Já tem uma conta? Faça login!</Link>
