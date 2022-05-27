@@ -48,6 +48,7 @@ const Forms = styled.form`
     display: flex;
     flex-direction: column;
     justify-content: space-around;
+
     input {
         width: 303px;
         height: 45px;
@@ -56,6 +57,7 @@ const Forms = styled.form`
         border-radius: 5px;
         box-sizing: border-box;
     }
+    
     button {
         width: 303px;
         height: 45px;
