@@ -1,17 +1,28 @@
 import React from 'react';
 import styled from 'styled-components';
-import logo from "../assets/images/logo.svg"
+import logo from "../assets/images/logo.svg";
+import axios from 'axios';
+import { Link } from 'react-router-dom';
 
-export default function SignPage () {
+export default function SignPage() {
 
     const [name, setName] = React.useState("")
     const [email, setEmail] = React.useState("")
     const [image, setImage] = React.useState("")
     const [password, setPassword] = React.useState("")
 
-    function login (event) {
+    function login(event) {
         event.preventDefault()
-        console.log("foi")
+
+        const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up";
+
+        axios.post(URL, {
+            email,
+            name,
+            image,
+            password,
+        })
+
     }
 
     return (
@@ -20,12 +31,12 @@ export default function SignPage () {
             <img src={logo} />
             <Forms onSubmit={login}>
                 <input type="email" onChange={e => setEmail(e.target.value)} value={email} placeholder='email' required></input>
-                <input type="text" onChange={e => setPassword(e.target.value)} value={password} placeholder='senha' required></input>
+                <input type="password" onChange={e => setPassword(e.target.value)} value={password} placeholder='senha' required></input>
                 <input type="text" onChange={e => setName(e.target.value)} value={name} placeholder='nome' required></input>
                 <input type="text" onChange={e => setImage(e.target.value)} value={image} placeholder='imagem' required></input>
                 <button>Cadastrar</button>
             </Forms>
-            <a href=''>Já tem uma conta? Faça login!</a>
+            <Link to="/">Já tem uma conta? Faça login!</Link>
         </Container>
 
 

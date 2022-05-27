@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import logo from "../assets/images/logo.svg"
 
@@ -22,7 +23,7 @@ export default function LoginPage() {
                 <input type="text" onChange={e => setPassword(e.target.value)} value={password} placeholder='senha' required></input>
                 <button>Entrar</button>
             </Forms>
-            <a href=''>Não tem uma conta? Cadastre-se!</a>
+            <Link to="/cadastro">Não tem uma conta? Cadastre-se!</Link>
         </Container>
 
 
