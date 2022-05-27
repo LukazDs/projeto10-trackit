@@ -2,7 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import logo from "../assets/images/logo.svg";
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import Loading from './loaders/Loading';
 
 export default function SignPage() {
 
@@ -10,19 +11,24 @@ export default function SignPage() {
     const [email, setEmail] = React.useState("")
     const [image, setImage] = React.useState("")
     const [password, setPassword] = React.useState("")
+    const [isLoading, setIsLoading] = React.useState(false)
+    const navigate = useNavigate()
 
     function login(event) {
         event.preventDefault()
 
-        const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up";
+        setIsLoading(true)
 
-        axios.post(URL, {
+        const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up";
+        const promise = axios.post(
+            URL, {
             email,
             name,
             image,
             password,
         })
 
+        promise.then(() => {setIsLoading(false)})
     }
 
     return (
@@ -30,11 +36,11 @@ export default function SignPage() {
         <Container>
             <img src={logo} />
             <Forms onSubmit={login}>
-                <input type="email" onChange={e => setEmail(e.target.value)} value={email} placeholder='email' required></input>
-                <input type="password" onChange={e => setPassword(e.target.value)} value={password} placeholder='senha' required></input>
-                <input type="text" onChange={e => setName(e.target.value)} value={name} placeholder='nome' required></input>
-                <input type="text" onChange={e => setImage(e.target.value)} value={image} placeholder='imagem' required></input>
-                <button>Cadastrar</button>
+                <input disabled={isLoading} type="email" onChange={e => setEmail(e.target.value)} value={email} placeholder='email' required></input>
+                <input disabled={isLoading} type="password" onChange={e => setPassword(e.target.value)} value={password} placeholder='senha' required></input>
+                <input disabled={isLoading} type="text" onChange={e => setName(e.target.value)} value={name} placeholder='nome' required></input>
+                <input disabled={isLoading} type="text" onChange={e => setImage(e.target.value)} value={image} placeholder='imagem' required></input>
+                <button disabled={isLoading} style={{ background: `${isLoading ? "#52B6FF" : "#52B6FF"}` }}>{isLoading ? <Loading /> : "Cadastrar"}</button>
             </Forms>
             <Link to="/">Já tem uma conta? Faça login!</Link>
         </Container>
@@ -49,8 +55,10 @@ const Container = styled.div`
     background: #FFFFFF;
     display: flex;
     flex-direction: column;
-    margin-top: 68px;
     align-items: center;
+    img {
+        margin-top: 68px;
+    }
     a {
         width: 232px;
         height: 17px;
@@ -75,16 +83,16 @@ const Forms = styled.form`
     input {
         width: 303px;
         height: 45px;
-        background: #FFFFFF;
         border: 1px solid #D5D5D5;
         border-radius: 5px;
-
     }
     
     button {
         width: 303px;
         height: 45px;
-        background: #52B6FF;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         border-radius: 5px;
         box-sizing: border-box;
         font-size: 20.976px;
