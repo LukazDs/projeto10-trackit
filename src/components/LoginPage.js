@@ -39,7 +39,7 @@ export default function LoginPage() {
     return (
 
         <Container style={{ background: `${isLoading ? "#E5E5E5" : "#FFFFFF"}` }}>
-            <img src={logo} />
+            <img alt={logo} src={logo} />
             <Forms onSubmit={login}>
                 <input
                     style={{ background: `${isLoading ? "#F2F2F2" : "#FFFFFF"}` }}
@@ -78,7 +78,7 @@ const Container = styled.div`
         line-height: 17px;
         text-align: center;
         text-decoration-line: underline;
-
+        cursor: pointer;
         color: #52B6FF;
     }
     `;
@@ -98,6 +98,7 @@ const Forms = styled.form`
         border: 1px solid #D5D5D5;
         border-radius: 5px;
         box-sizing: border-box;
+        cursor: pointer;
     }
     
     button {
@@ -111,7 +112,7 @@ const Forms = styled.form`
         font-size: 20.976px;
         line-height: 26px;
         text-align: center;
-
+        cursor: pointer;
         color: #FFFFFF;
     }
     `;

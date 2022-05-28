@@ -38,7 +38,7 @@ export default function SignPage() {
     return (
 
         <Container>
-            <img src={logo} />
+            <img src={logo} alt={logo}/>
             <Forms onSubmit={login}>
                 <input disabled={isLoading} type="email" onChange={e => setEmail(e.target.value)} value={email} placeholder='email' required></input>
                 <input disabled={isLoading} type="password" onChange={e => setPassword(e.target.value)} value={password} placeholder='senha' required></input>
@@ -70,7 +70,7 @@ const Container = styled.div`
         line-height: 17px;
         text-align: center;
         text-decoration-line: underline;
-
+        cursor: pointer;
         color: #52B6FF;
     }
     `;
@@ -89,6 +89,7 @@ const Forms = styled.form`
         height: 45px;
         border: 1px solid #D5D5D5;
         border-radius: 5px;
+        cursor: pointer;
     }
     
     button {
@@ -102,6 +103,7 @@ const Forms = styled.form`
         font-size: 20.976px;
         line-height: 26px;
         text-align: center;
+        cursor: pointer;
         color: #FFFFFF;
     }
     `;
