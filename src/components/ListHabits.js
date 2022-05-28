@@ -8,8 +8,7 @@ function Days() {
 
 }
 
-export default function Habits() {
-    const listHabits = ["Ler o capítulo de um livro", "Ler o capítulo de um livro", "Ler o capítulo de um livro"]
+export default function Habits({listHabits}) {
     return listHabits.map((v, i) =>
         <Habit key={i}>
             <div className="topo">

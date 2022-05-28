@@ -2,7 +2,7 @@ import HeaderPage from "./HeaderPage";
 import Menu from "./Menu";
 import CreatedHabit from "./CreatedHabit";
 import styled from "styled-components";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { useContext } from "react";
 import UserContext from "../context/UserContext";
@@ -11,17 +11,28 @@ import Habits from "./ListHabits";
 export default function HabitsPage() {
 
     const { token } = useContext(UserContext)
-
-    console.log(!token ? localStorage.getItem("token") : token)
+    const listHabits = []
+    const tokenID = !token ? localStorage.getItem("token") : token
+    const [create, setCreate] = useState(false)
 
     return (
         <Container>
             <HeaderPage />
             <MakeNewHabit>
                 <span>Meus hábitos</span>
-                <div><p>+</p></div>
+                <div onClick={() => setCreate(true)}><p>+</p></div>
             </MakeNewHabit>
-            <Habits/>
+
+            {create ? <CreatedHabit /> : ""}
+
+            {listHabits.length === 0 ?
+                <NoHabits>
+                    <p>
+                        Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!
+                    </p>
+                </NoHabits> : <Habits listHabits={listHabits} />}
+
+
             {/* <CreatedHabit>
             </CreatedHabit> */}
             {/* <NoHabits>
