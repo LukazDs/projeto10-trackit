@@ -11,9 +11,10 @@ function App() {
 
   const [token, setToken] = React.useState("")
   const [image, setImage] = React.useState("")
+  const [percentage, setPercentage] = React.useState(0)
 
   return (
-    <UserContext.Provider value={{ token, setToken, image, setImage }}>
+    <UserContext.Provider value={{ token, setToken, image, setImage, percentage, setPercentage }}>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<LoginPage />} />

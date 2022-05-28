@@ -1,15 +1,14 @@
 import styled from "styled-components"
 import { CircularProgressbar } from "react-circular-progressbar";
 import 'react-circular-progressbar/dist/styles.css'
-
-import { useState } from "react";
+import { useContext } from "react";
+import UserContext from "../context/UserContext";
 import { Link, useNavigate } from "react-router-dom";
 
 export default function Menu() {
-
+    const { percentage } = useContext(UserContext)
     const navigate = useNavigate()
 
-    const [percentage, setPercentage] = useState(16)
     return (
         <>
             <Footer>
