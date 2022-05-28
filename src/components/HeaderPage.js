@@ -9,7 +9,7 @@ export default function HeaderPage() {
     return (
         <Header>
             <span>TrackIt</span>
-            <img src={image} alt={image}/>
+            <img src={(image.length !== 0) ? image : localStorage.getItem("image")} alt={image}/>
         </Header>
     )
 }

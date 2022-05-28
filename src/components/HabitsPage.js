@@ -10,6 +10,8 @@ export default function HabitsPage() {
 
     const { token } = useContext(UserContext)
 
+    console.log(!token ? localStorage.getItem("token") : token)
+
     return (
         <Container>
             <HeaderPage />

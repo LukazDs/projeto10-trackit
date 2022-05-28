@@ -11,7 +11,7 @@ export default function LoginPage() {
     const [email, setEmail] = React.useState("")
     const [password, setPassword] = React.useState("")
     const [isLoading, setIsLoading] = React.useState(false)
-    const { setToken, setImage } = React.useContext(UserContext)
+    const { setToken, setImage, image } = React.useContext(UserContext)
     const navigate = useNavigate()
 
     function login(event) {
@@ -27,7 +27,9 @@ export default function LoginPage() {
         promise.then(res => {
             setIsLoading(false);
             setToken(res.data.token);
-            setImage(res.data.image)
+            localStorage.setItem("token", res.data.token)
+            setImage(res.data.image);
+            localStorage.setItem("image", res.data.image)
             navigate("/habits")
         })
             .catch(err => {
