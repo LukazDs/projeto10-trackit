@@ -31,8 +31,8 @@ export default function SignPage() {
             password,
         })
 
-        promise.then(() => { setIsLoading(false); navigate("/") })
-            .catch(err => { setIsLoading(false); alert(err.response.statusText); setImage(imageInput) })
+        promise.then(() => { setIsLoading(false); navigate("/");  setImage(imageInput) })
+            .catch(err => { setIsLoading(false); alert(err.response.statusText); })
     }
 
     return (

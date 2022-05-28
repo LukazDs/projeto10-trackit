@@ -1,10 +1,9 @@
 import axios from 'axios';
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import logo from "../assets/images/logo.svg"
 import Loading from './loaders/Loading';
-
 import UserContext from '../context/UserContext';
 
 export default function LoginPage() {
@@ -12,7 +11,8 @@ export default function LoginPage() {
     const [email, setEmail] = React.useState("")
     const [password, setPassword] = React.useState("")
     const [isLoading, setIsLoading] = React.useState(false)
-    const {setToken} = React.useContext(UserContext)
+    const { setToken } = React.useContext(UserContext)
+    const navigate = useNavigate()
 
     function login(event) {
         event.preventDefault()
@@ -27,8 +27,12 @@ export default function LoginPage() {
         promise.then(res => {
             setIsLoading(false);
             setToken(res.data.token);
+            navigate("/habits")
         })
-            .catch(err => {setIsLoading(false); alert(err.response.statusText)})
+            .catch(err => {
+                setIsLoading(false);
+                alert(err.response.statusText);
+            })
     }
 
 
@@ -37,13 +41,13 @@ export default function LoginPage() {
         <Container style={{ background: `${isLoading ? "#E5E5E5" : "#FFFFFF"}` }}>
             <img src={logo} />
             <Forms onSubmit={login}>
-                <input 
+                <input
                     style={{ background: `${isLoading ? "#F2F2F2" : "#FFFFFF"}` }}
                     type="email" onChange={e => setEmail(e.target.value)}
                     value={email}
                     disabled={isLoading}
                     placeholder='email' required></input>
-                <input 
+                <input
                     style={{ background: `${isLoading ? "#F2F2F2" : "#FFFFFF"}` }}
                     type="password" onChange={e => setPassword(e.target.value)}
                     value={password}
