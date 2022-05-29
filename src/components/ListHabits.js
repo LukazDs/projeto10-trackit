@@ -1,28 +1,60 @@
+import axios from "axios";
 import { useState, useContext } from "react";
 import styled from "styled-components";
 import UserContext from "../context/UserContext";
 
+function Habit({ id, name, token, setListHabits }) {
 
-export default function Habits() {
+    const tokenID = !token ? localStorage.getItem("token") : token
 
-    const {listHabits} = useContext(UserContext)
+
+    function getDate() {
+        const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits"
+        const config = { headers: { "Authorization": `Bearer ${tokenID}` } };
+        const promise = axios.get(URL, config);
+        promise.then(res => setListHabits(res.data))
+    }
+
+    console.log(tokenID)
+
+    function confirmDelete() {
+        const toDelete = window.confirm("deletar?")
+        if(toDelete) {
+            const URL = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}`;
+            const config = { headers: { "Authorization": `Bearer ${tokenID}` } }; 
+            const promise = axios.delete(URL, config)
+            promise.then(() => getDate())
+        }
+    }
 
     function Days() {
         return ["D", "S", "T", "Q", "Q", "S", "S"]
     }
-    return listHabits.map((v, i) =>
-        <Habit key={i}>
+    return (
+        <HabitDesign id={id}>
             <div className="topo">
-                <span>{v.name}</span>
-                <ion-icon name="trash-outline"></ion-icon>
+                <span>{name}</span>
+                <ion-icon onClick={confirmDelete} name="trash-outline"></ion-icon>
             </div>
             <div className="days">
                 {Days().map((v, i) => <Day key={i}>{v}</Day>)}
             </div>
-        </Habit>)
+        </HabitDesign>
+    )
+
 }
 
-const Habit = styled.div`
+
+export default function Habits() {
+
+    const { listHabits, token, setListHabits } = useContext(UserContext)
+
+    return listHabits.map((v, i) =>
+        <Habit setListHabits={setListHabits} token={token} key={i} id={v.id} name={v.name} />
+    )
+}
+
+const HabitDesign = styled.div`
     width: 340px;
     height: 91px;
     background: #FFFFFF;
