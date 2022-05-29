@@ -3,7 +3,7 @@ import { useState, useContext } from "react";
 import styled from "styled-components";
 import UserContext from "../context/UserContext";
 
-function Habit({ id, name, token, setListHabits }) {
+function Habit({ id, name, days, token, setListHabits }) {
 
     const tokenID = !token ? localStorage.getItem("token") : token
 
@@ -19,9 +19,9 @@ function Habit({ id, name, token, setListHabits }) {
 
     function confirmDelete() {
         const toDelete = window.confirm("deletar?")
-        if(toDelete) {
+        if (toDelete) {
             const URL = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}`;
-            const config = { headers: { "Authorization": `Bearer ${tokenID}` } }; 
+            const config = { headers: { "Authorization": `Bearer ${tokenID}` } };
             const promise = axios.delete(URL, config)
             promise.then(() => getDate())
         }
@@ -37,7 +37,17 @@ function Habit({ id, name, token, setListHabits }) {
                 <ion-icon onClick={confirmDelete} name="trash-outline"></ion-icon>
             </div>
             <div className="days">
-                {Days().map((v, i) => <Day key={i}>{v}</Day>)}
+                {Days().map((v, i) =>
+                    <Day
+                        key={i}
+                        style={
+                            {
+                                background: `${!days.some(item => item === i) ? "#FFFFFF" : "#CFCFCF"}`,
+                                color: `${!days.some(item => item === i) ? "#CFCFCF" : "#FFFFFF"}`
+                            }
+                        }>
+                        {v}
+                    </Day>)}
             </div>
         </HabitDesign>
     )
@@ -50,7 +60,7 @@ export default function Habits() {
     const { listHabits, token, setListHabits } = useContext(UserContext)
 
     return listHabits.map((v, i) =>
-        <Habit setListHabits={setListHabits} token={token} key={i} id={v.id} name={v.name} />
+        <Habit setListHabits={setListHabits} days={v.days} token={token} key={i} id={v.id} name={v.name} />
     )
 }
 

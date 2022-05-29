@@ -17,8 +17,6 @@ function Day({ day, id, listNumbersDays, setNumbersDays }) {
             setNumbersDays([...listNumbersDays, id]);
         }
     }
-
-
     return (
         <DesignDay
             style={
@@ -37,8 +35,8 @@ function Day({ day, id, listNumbersDays, setNumbersDays }) {
 
 }
 
-function Days() {
-    const [listNumbersDays, setNumbersDays] = useState([])
+function Days({listNumbersDays, setNumbersDays}) {
+    
     const listWeek = ["D", "S", "T", "Q", "Q", "S", "S"]
     console.log(listNumbersDays)
 
@@ -48,8 +46,9 @@ function Days() {
 export default function CreatedHabit({ setCreate, token }) {
 
     const [textInput, setTextInput] = useState("")
+    const [listNumbersDays, setNumbersDays] = useState([])
 
-    const {setListHabits, listHabits} = useContext(UserContext)
+    const { setListHabits, listHabits } = useContext(UserContext)
     console.log(listHabits)
 
     function getDate() {
@@ -59,14 +58,15 @@ export default function CreatedHabit({ setCreate, token }) {
         promise.then(res => setListHabits(res.data))
     }
 
-
     function submitForm(e) {
         e.preventDefault()
-        const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits";
-        const config = { headers: { "Authorization": `Bearer ${token}` } }
-        const body = { name: "jogar mine", days: [1, 2, 4] }
-        const promise = axios.post(URL, body, config)
-        promise.then(res => { console.log(res.data); setCreate(false); getDate() })
+        if (listNumbersDays.length > 0) {
+            const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits";
+            const config = { headers: { "Authorization": `Bearer ${token}` } }
+            const body = { name: textInput, days: listNumbersDays }
+            const promise = axios.post(URL, body, config)
+            promise.then(res => { console.log(res.data); setCreate(false); getDate() })
+        }
     }
 
     return (
@@ -77,7 +77,7 @@ export default function CreatedHabit({ setCreate, token }) {
                     value={textInput}
                     onChange={(e) => setTextInput(e.target.value)}
                     required />
-                <div className="days-create"><Days /></div>
+                <div className="days-create"><Days listNumbersDays={listNumbersDays} setNumbersDays = {setNumbersDays}/></div>
                 <FinallySession>
                     <a onClick={() => setCreate(false)}>Cancelar</a>
                     <button><span>Salvar</span></button>
