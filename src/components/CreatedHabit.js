@@ -1,16 +1,14 @@
 import axios from "axios"
 import { useState, useContext } from "react"
-import { useNavigate } from "react-router-dom"
 import styled from "styled-components"
 import UserContext from "../context/UserContext"
 
-function Day({ day, id, listNumbersDays, setNumbersDays }) {
+function Day({ day, id, listNumbersDays, setNumbersDays, blocked }) {
 
     const [clicked, setClicked] = useState(false)
 
     function wasClicked() {
         if (listNumbersDays.some(item => item === id)) {
-            console.log('elemento repetido')
             const newListNumbers = listNumbersDays.filter(item => id !== item)
             setNumbersDays(newListNumbers)
         } else {
@@ -26,8 +24,10 @@ function Day({ day, id, listNumbersDays, setNumbersDays }) {
                 }
             }
             onClick={() => {
-                setClicked(!clicked);
-                wasClicked()
+                if (!blocked) {
+                    setClicked(!clicked);
+                    wasClicked()
+                }
             }}>
             {day}
         </DesignDay>
@@ -35,12 +35,11 @@ function Day({ day, id, listNumbersDays, setNumbersDays }) {
 
 }
 
-function Days({listNumbersDays, setNumbersDays}) {
-    
-    const listWeek = ["D", "S", "T", "Q", "Q", "S", "S"]
-    console.log(listNumbersDays)
+function Days({ listNumbersDays, setNumbersDays, blocked }) {
 
-    return listWeek.map((v, i) => <Day id={i} listNumbersDays={listNumbersDays} setNumbersDays={setNumbersDays} day={v} key={i} />)
+    const listWeek = ["D", "S", "T", "Q", "Q", "S", "S"]
+
+    return listWeek.map((v, i) => <Day blocked={blocked} id={i} listNumbersDays={listNumbersDays} setNumbersDays={setNumbersDays} day={v} key={i} />)
 }
 
 export default function CreatedHabit({ setCreate, token }) {
@@ -48,24 +47,25 @@ export default function CreatedHabit({ setCreate, token }) {
     const [textInput, setTextInput] = useState("")
     const [listNumbersDays, setNumbersDays] = useState([])
 
-    const { setListHabits, listHabits } = useContext(UserContext)
-    console.log(listHabits)
+    const { setListHabits } = useContext(UserContext)
+    const [blocked, setBlocked] = useState(false)
 
     function getDate() {
         const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits"
         const config = { headers: { "Authorization": `Bearer ${token}` } };
         const promise = axios.get(URL, config);
-        promise.then(res => setListHabits(res.data))
+        promise.then(res => { setListHabits(res.data) })
     }
 
     function submitForm(e) {
         e.preventDefault()
+        setBlocked(true)
         if (listNumbersDays.length > 0) {
             const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits";
             const config = { headers: { "Authorization": `Bearer ${token}` } }
             const body = { name: textInput, days: listNumbersDays }
             const promise = axios.post(URL, body, config)
-            promise.then(res => { console.log(res.data); setCreate(false); getDate() })
+            promise.then(() => { setBlocked(false); setCreate(false); getDate() })
         }
     }
 
@@ -73,14 +73,15 @@ export default function CreatedHabit({ setCreate, token }) {
         <CreateHabit>
             <Form onSubmit={submitForm}>
                 <input
+                    disabled={blocked}
                     type={"text"}
                     value={textInput}
                     onChange={(e) => setTextInput(e.target.value)}
                     required />
-                <div className="days-create"><Days listNumbersDays={listNumbersDays} setNumbersDays = {setNumbersDays}/></div>
+                <div className="days-create"><Days blocked={blocked} listNumbersDays={listNumbersDays} setNumbersDays={setNumbersDays} /></div>
                 <FinallySession>
                     <a onClick={() => setCreate(false)}>Cancelar</a>
-                    <button><span>Salvar</span></button>
+                    <button disabled={blocked}><span>Salvar</span></button>
                 </FinallySession>
             </Form>
         </CreateHabit>
