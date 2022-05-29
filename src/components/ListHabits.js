@@ -1,7 +1,11 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import styled from "styled-components";
+import UserContext from "../context/UserContext";
 
-export default function Habits({ listHabits }) {
+
+export default function Habits() {
+
+    const {listHabits} = useContext(UserContext)
 
     function Days() {
         return ["D", "S", "T", "Q", "Q", "S", "S"]
@@ -9,7 +13,7 @@ export default function Habits({ listHabits }) {
     return listHabits.map((v, i) =>
         <Habit key={i}>
             <div className="topo">
-                <span>{v}</span>
+                <span>{v.name}</span>
                 <ion-icon name="trash-outline"></ion-icon>
             </div>
             <div className="days">

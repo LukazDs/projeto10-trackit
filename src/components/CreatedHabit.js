@@ -1,12 +1,15 @@
-import { useState } from "react"
+import axios from "axios"
+import { useState, useContext } from "react"
+import { useNavigate } from "react-router-dom"
 import styled from "styled-components"
+import UserContext from "../context/UserContext"
 
-function Day({day, id, listNumbersDays, setNumbersDays}) {
+function Day({ day, id, listNumbersDays, setNumbersDays }) {
 
     const [clicked, setClicked] = useState(false)
 
     function wasClicked() {
-        if(listNumbersDays.some(item => item === id)) {
+        if (listNumbersDays.some(item => item === id)) {
             console.log('elemento repetido')
             const newListNumbers = listNumbersDays.filter(item => id !== item)
             setNumbersDays(newListNumbers)
@@ -14,49 +17,66 @@ function Day({day, id, listNumbersDays, setNumbersDays}) {
             setNumbersDays([...listNumbersDays, id]);
         }
     }
-    
+
 
     return (
-        <DesignDay 
+        <DesignDay
             style={
-                {background: `${!clicked ? "#FFFFFF" : "#CFCFCF"}`,
-                color: `${!clicked ? "#CFCFCF" : "#FFFFFF"}`}
+                {
+                    background: `${!clicked ? "#FFFFFF" : "#CFCFCF"}`,
+                    color: `${!clicked ? "#CFCFCF" : "#FFFFFF"}`
+                }
             }
-            onClick={() => 
-                {setClicked(!clicked);
-                wasClicked()}}>
-                {day}
-        </DesignDay> 
+            onClick={() => {
+                setClicked(!clicked);
+                wasClicked()
+            }}>
+            {day}
+        </DesignDay>
     )
-    
+
 }
 
-function Days () {
+function Days() {
     const [listNumbersDays, setNumbersDays] = useState([])
     const listWeek = ["D", "S", "T", "Q", "Q", "S", "S"]
     console.log(listNumbersDays)
 
-    return listWeek.map((v, i) => <Day id={i} listNumbersDays={listNumbersDays} setNumbersDays={setNumbersDays} day={v} key={i}/>)   
+    return listWeek.map((v, i) => <Day id={i} listNumbersDays={listNumbersDays} setNumbersDays={setNumbersDays} day={v} key={i} />)
 }
 
-export default function CreatedHabit ({setCreate}) {
+export default function CreatedHabit({ setCreate, token }) {
 
     const [textInput, setTextInput] = useState("")
 
-    function submitForm (e) {
-        e.preventDefault()
-        console.log(textInput)
+    const {setListHabits, listHabits} = useContext(UserContext)
+    console.log(listHabits)
+
+    function getDate() {
+        const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits"
+        const config = { headers: { "Authorization": `Bearer ${token}` } };
+        const promise = axios.get(URL, config);
+        promise.then(res => setListHabits(res.data))
     }
 
+
+    function submitForm(e) {
+        e.preventDefault()
+        const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits";
+        const config = { headers: { "Authorization": `Bearer ${token}` } }
+        const body = { name: "jogar mine", days: [1, 2, 4] }
+        const promise = axios.post(URL, body, config)
+        promise.then(res => { console.log(res.data); setCreate(false); getDate() })
+    }
 
     return (
         <CreateHabit>
             <Form onSubmit={submitForm}>
-                <input 
-                    type={"text"} 
-                    value={textInput} 
+                <input
+                    type={"text"}
+                    value={textInput}
                     onChange={(e) => setTextInput(e.target.value)}
-                    required/>
+                    required />
                 <div className="days-create"><Days /></div>
                 <FinallySession>
                     <a onClick={() => setCreate(false)}>Cancelar</a>

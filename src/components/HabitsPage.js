@@ -10,10 +10,17 @@ import Habits from "./ListHabits";
 
 export default function HabitsPage() {
 
-    const { token } = useContext(UserContext)
-    const listHabits = ["ass"]
+    const { token, setListHabits, listHabits } = useContext(UserContext)
     const tokenID = !token ? localStorage.getItem("token") : token
     const [create, setCreate] = useState(false)
+
+
+    useEffect(() => {
+        const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits"
+        const config = {headers : {"Authorization": `Bearer ${tokenID}`}};
+        const promise = axios.get(URL, config);
+        promise.then(res => setListHabits(res.data))
+    }, [])
 
     return (
         <Container>
@@ -23,14 +30,14 @@ export default function HabitsPage() {
                 <div onClick={() => setCreate(true)}><p>+</p></div>
             </MakeNewHabit>
 
-            {create ? <CreatedHabit setCreate={setCreate} /> : ""}
+            {create ? <CreatedHabit setCreate={setCreate} token={tokenID}/> : ""}
 
             {listHabits.length === 0 ?
                 <NoHabits>
                     <p>
                         Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!
                     </p>
-                </NoHabits> : <Habits listHabits={listHabits} />}
+                </NoHabits> : <Habits />}
             <Menu />
         </Container>
     )
