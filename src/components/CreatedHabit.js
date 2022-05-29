@@ -66,6 +66,11 @@ export default function CreatedHabit({ setCreate, token }) {
             const body = { name: textInput, days: listNumbersDays }
             const promise = axios.post(URL, body, config)
             promise.then(() => { setBlocked(false); setCreate(false); getDate() })
+                .catch(err => err.response.statusText)
+        }
+        if (listNumbersDays.length === 0) {
+            alert("Selecione ao menos um dia!")
+            setBlocked(false)
         }
     }
 
