@@ -11,7 +11,7 @@ import Habits from "./ListHabits";
 export default function HabitsPage() {
 
     const { token } = useContext(UserContext)
-    const listHabits = []
+    const listHabits = ["ass"]
     const tokenID = !token ? localStorage.getItem("token") : token
     const [create, setCreate] = useState(false)
 
@@ -23,7 +23,7 @@ export default function HabitsPage() {
                 <div onClick={() => setCreate(true)}><p>+</p></div>
             </MakeNewHabit>
 
-            {create ? <CreatedHabit /> : ""}
+            {create ? <CreatedHabit setCreate={setCreate} /> : ""}
 
             {listHabits.length === 0 ?
                 <NoHabits>
@@ -31,15 +31,6 @@ export default function HabitsPage() {
                         Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!
                     </p>
                 </NoHabits> : <Habits listHabits={listHabits} />}
-
-
-            {/* <CreatedHabit>
-            </CreatedHabit> */}
-            {/* <NoHabits>
-                <p>
-                Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!
-                </p>
-            </NoHabits> */}
             <Menu />
         </Container>
     )

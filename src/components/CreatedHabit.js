@@ -1,23 +1,65 @@
+import { useState } from "react"
 import styled from "styled-components"
 
-function Days () {
+function Day({day, id, listNumbersDays, setNumbersDays}) {
 
-    const listWeek = ["D", "S", "T", "Q", "Q", "S", "S"]
+    const [clicked, setClicked] = useState(false)
 
-    return listWeek.map((v, i) => <Day key={i}>{v}</Day>)
-        
+    function wasClicked() {
+        if(listNumbersDays.some(item => item === id)) {
+            console.log('elemento repetido')
+            const newListNumbers = listNumbersDays.filter(item => id !== item)
+            setNumbersDays(newListNumbers)
+        } else {
+            setNumbersDays([...listNumbersDays, id]);
+        }
+    }
+    
+
+    return (
+        <DesignDay 
+            style={
+                {background: `${!clicked ? "#FFFFFF" : "#CFCFCF"}`,
+                color: `${!clicked ? "#CFCFCF" : "#FFFFFF"}`}
+            }
+            onClick={() => 
+                {setClicked(!clicked);
+                wasClicked()}}>
+                {day}
+        </DesignDay> 
+    )
+    
 }
 
-export default function CreatedHabit () {
+function Days () {
+    const [listNumbersDays, setNumbersDays] = useState([])
+    const listWeek = ["D", "S", "T", "Q", "Q", "S", "S"]
+    console.log(listNumbersDays)
+
+    return listWeek.map((v, i) => <Day id={i} listNumbersDays={listNumbersDays} setNumbersDays={setNumbersDays} day={v} key={i}/>)   
+}
+
+export default function CreatedHabit ({setCreate}) {
+
+    const [textInput, setTextInput] = useState("")
+
+    function submitForm (e) {
+        e.preventDefault()
+        console.log(textInput)
+    }
 
 
     return (
         <CreateHabit>
-            <Form>
-                <input />
-                <div><Days /></div>
+            <Form onSubmit={submitForm}>
+                <input 
+                    type={"text"} 
+                    value={textInput} 
+                    onChange={(e) => setTextInput(e.target.value)}
+                    required/>
+                <div className="days-create"><Days /></div>
                 <FinallySession>
-                    <a>Cancelar</a>
+                    <a onClick={() => setCreate(false)}>Cancelar</a>
                     <button><span>Salvar</span></button>
                 </FinallySession>
             </Form>
@@ -47,7 +89,7 @@ const Form = styled.form`
         border-radius: 5px;
     }
 
-    div {
+    .days-create {
         width: 234px;
         display: flex;
         justify-content: space-between;
@@ -56,9 +98,12 @@ const Form = styled.form`
     }
 `
 
-const Day = styled.button`
+const DesignDay = styled.div`
     width: 30px;
     height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     background: #FFFFFF;
     border: 1px solid #D5D5D5;
     border-radius: 5px;
@@ -73,7 +118,6 @@ const Day = styled.button`
 `
 
 const FinallySession = styled.div`
-    width: 176px;
     height: 36px;
     display: flex;
     justify-content: space-between;
@@ -81,6 +125,7 @@ const FinallySession = styled.div`
     a {
         width: 69px;
         height: 20px;
+        margin-left: 152px;
         cursor: pointer;
         font-family: 'Lexend Deca';
         font-style: normal;
@@ -94,7 +139,7 @@ const FinallySession = styled.div`
     button {
         width: 84px;
         height: 36px;
-
+        margin-right: 10px;
         background: #52B6FF;
         border-radius: 5px;
         border-color: #52B6FF;

@@ -1,14 +1,11 @@
+import { useState } from "react";
 import styled from "styled-components";
 
-function Days() {
+export default function Habits({ listHabits }) {
 
-    const listWeek = ["D", "S", "T", "Q", "Q", "S", "S"]
-
-    return listWeek.map((v, i) => <Day key={i}>{v}</Day>)
-
-}
-
-export default function Habits({listHabits}) {
+    function Days() {
+        return ["D", "S", "T", "Q", "Q", "S", "S"]
+    }
     return listHabits.map((v, i) =>
         <Habit key={i}>
             <div className="topo">
@@ -16,7 +13,7 @@ export default function Habits({listHabits}) {
                 <ion-icon name="trash-outline"></ion-icon>
             </div>
             <div className="days">
-                <Days />
+                {Days().map((v, i) => <Day key={i}>{v}</Day>)}
             </div>
         </Habit>)
 }
@@ -62,7 +59,6 @@ const Day = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-   
     background: #FFFFFF;
     border: 1px solid #D5D5D5;
     border-radius: 5px;
