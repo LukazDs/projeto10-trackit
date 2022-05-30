@@ -15,8 +15,6 @@ function Habit({ id, name, days, token, setListHabits }) {
         promise.then(res => setListHabits(res.data))
     }
 
-    console.log(tokenID)
-
     function confirmDelete() {
         const toDelete = window.confirm("deletar?")
         if (toDelete) {
@@ -75,19 +73,19 @@ const HabitDesign = styled.div`
 
    
     .topo {
+        margin: 10px;
         span {
         font-family: 'Lexend Deca';
         font-style: normal;
         font-weight: 400;
         font-size: 19.976px;
         line-height: 25px;
-        margin: 10px;
-
         color: #666666;
         }
         ion-icon {
+            margin-left: 196px;
             cursor: pointer;
-            font-size: 13px;
+            font-size: 16px;
             color: #666666;
         }
     }

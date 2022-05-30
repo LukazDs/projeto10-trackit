@@ -6,6 +6,8 @@ import SignPage from "./components/SignPage";
 import HabitsPage from "./components/HabitsPage";
 import UserContext from "./context/UserContext";
 import React from "react";
+import TodayHabits from "./components/TodayHabits";
+import HistoryPage from "./components/HistoryPage";
 
 function App() {
 
@@ -21,6 +23,8 @@ function App() {
           <Route path="/" element={<LoginPage />} />
           <Route path="/cadastro" element={<SignPage />} />
           <Route path="/habits" element={<HabitsPage />} />
+          <Route path="/today" element={<TodayHabits />} />
+          <Route path="/history" element={<HistoryPage />} />
         </Routes>
       </BrowserRouter>
     </UserContext.Provider>

@@ -22,6 +22,7 @@ const Header = styled.div`
     justify-content: space-evenly;
     align-items: center;
     position: fixed;
+    z-index: 1;
     left: 0px;
     top: 0px;
     background: #126BA5;

@@ -85,8 +85,8 @@ export default function CreatedHabit({ setCreate, token }) {
                     required />
                 <div className="days-create"><Days blocked={blocked} listNumbersDays={listNumbersDays} setNumbersDays={setNumbersDays} /></div>
                 <FinallySession>
-                    <a onClick={() => setCreate(false)}>Cancelar</a>
-                    <button disabled={blocked}><span>Salvar</span></button>
+                    <p onClick={() => setCreate(false)}>Cancelar</p>
+                    <button type="submit" disabled={blocked}><span>Salvar</span></button>
                 </FinallySession>
             </Form>
         </CreateHabit>
@@ -148,7 +148,7 @@ const FinallySession = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    a {
+    p {
         width: 69px;
         height: 20px;
         margin-left: 152px;

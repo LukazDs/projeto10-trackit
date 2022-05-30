@@ -24,6 +24,7 @@ export default function Menu() {
 
 const Footer = styled.div`
     position: fixed;
+    z-index: 1;
     width: 375px;
     height: 70px;
     display: flex;
@@ -31,8 +32,7 @@ const Footer = styled.div`
     align-items: center;
     left: 0px;
     top: 597px;
-    background: "#FFFFFF";
-    border: solid 1px;
+    background: #FFFFFF;
     a {
         font-family: 'Lexend Deca';
         font-style: normal;

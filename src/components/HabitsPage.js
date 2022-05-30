@@ -47,6 +47,7 @@ const Container = styled.div`
     width: 375px;
     height: 667px;
     background: #F2F2F2;
+    z-index: 0;
     `;
 
 const MakeNewHabit = styled.div`
