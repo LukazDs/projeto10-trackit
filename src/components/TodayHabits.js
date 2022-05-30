@@ -7,23 +7,34 @@ import { useContext } from "react";
 import UserContext from "../context/UserContext";
 import axios from "axios";
 
-function HabitToday({ name }) {
+function HabitToday({ token, name, nowSeq, done, id, setListTodayHabits }) {
 
-    const [clicked, setClicked] = useState(false)
+    function markHabit() {
+        const URL = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}/check`
+        const config = { headers: { "Authorization": `Bearer ${token}` } }
+        const promise = axios.post(URL, {}, config)
+        promise.then(() => getDate())
+    }
+    function getDate() {
+        const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today"
+        const config = { headers: { "Authorization": `Bearer ${token}` } };
+        const promise = axios.get(URL, config);
+        promise.then(res => setListTodayHabits(res.data))
+    }
 
     return (
         <HabitTodayDesign>
             <div className="text-habit">
                 <h3>{name}</h3>
                 <div>
-                    <p>Sequência atual: 3 dias</p>
+                    <p>Sequência atual: <span style={{ color: `${done ? "#8FC549" : "#666666"}` }}>{nowSeq} dias</span></p>
                     <p>Seu recorde: 5 dias</p>
                 </div>
             </div>
             <div
-                onClick={() => setClicked(!clicked)}
+                onClick={markHabit}
                 className="verification"
-                style={{ background: `${!clicked ? "#EBEBEB" : "#8FC549"}` }}>
+                style={{ background: `${!done ? "#EBEBEB" : "#8FC549"}` }}>
                 <ion-icon name="checkmark-sharp"></ion-icon>
             </div>
         </HabitTodayDesign>
@@ -43,7 +54,7 @@ export default function TodayHabits() {
         const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today"
         const config = { headers: { "Authorization": `Bearer ${tokenID}` } }
         const promise = axios.get(URL, config)
-        promise.then((res) => { setListTodayHabits(res.data) })
+        promise.then((res) => { setListTodayHabits(res.data); console.log(res.data) })
     }, [])
 
 
@@ -55,7 +66,7 @@ export default function TodayHabits() {
                 {!listTodayHabits.length > 0 ? <span>Nenhum hábito concluído ainda</span> : <span style={{ color: "#8FC549" }}>67% dos hábitos concluídos</span>}
             </InfoDay>
             <ContainerHabits>
-                {listTodayHabits.map((v, i) => <HabitToday name={v.name} key={i} />)}
+                {listTodayHabits.map((v, i) => <HabitToday setListTodayHabits={setListTodayHabits} id={v.id} token={tokenID} done={v.done} nowSeq={v.currentSequence} name={v.name} key={i} />)}
             </ContainerHabits>
             <Menu />
         </Container>
