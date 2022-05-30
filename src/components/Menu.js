@@ -31,7 +31,7 @@ const Footer = styled.div`
     justify-content: space-around;
     align-items: center;
     left: 0px;
-    top: 597px;
+    top: 667px;
     background: #FFFFFF;
     a {
         font-family: 'Lexend Deca';

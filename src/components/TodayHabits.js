@@ -7,19 +7,27 @@ import { useContext } from "react";
 import UserContext from "../context/UserContext";
 import axios from "axios";
 
-function HabitToday({ token, name, nowSeq, done, id, setListTodayHabits }) {
+function HabitToday({ setPercentage, token, name, nowSeq, done, id, highSeq, listTodayHabits, setListTodayHabits }) {
 
     function markHabit() {
         const URL = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}/check`
         const config = { headers: { "Authorization": `Bearer ${token}` } }
         const promise = axios.post(URL, {}, config)
-        promise.then(() => getDate())
+        promise.then(() => { getDate() })
     }
+
+    function uncheckHabit() {
+        const URL = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}/uncheck`
+        const config = { headers: { "Authorization": `Bearer ${token}` } }
+        const promise = axios.post(URL, {}, config)
+        promise.then(() => { getDate() })
+    }
+
     function getDate() {
         const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today"
         const config = { headers: { "Authorization": `Bearer ${token}` } };
         const promise = axios.get(URL, config);
-        promise.then(res => setListTodayHabits(res.data))
+        promise.then(res => { setListTodayHabits(res.data); setPercentage((listTodayHabits.filter(v => v.done).length / listTodayHabits.length) * 100) })
     }
 
     return (
@@ -28,11 +36,11 @@ function HabitToday({ token, name, nowSeq, done, id, setListTodayHabits }) {
                 <h3>{name}</h3>
                 <div>
                     <p>Sequência atual: <span style={{ color: `${done ? "#8FC549" : "#666666"}` }}>{nowSeq} dias</span></p>
-                    <p>Seu recorde: 5 dias</p>
+                    <p>Seu recorde: <span style={{ color: `${nowSeq !== 0 && nowSeq === highSeq ? "#8FC549" : "#666666"}` }}>{highSeq} dias</span></p>
                 </div>
             </div>
             <div
-                onClick={markHabit}
+                onClick={(!done) ? markHabit : uncheckHabit}
                 className="verification"
                 style={{ background: `${!done ? "#EBEBEB" : "#8FC549"}` }}>
                 <ion-icon name="checkmark-sharp"></ion-icon>
@@ -47,26 +55,38 @@ export default function TodayHabits() {
     const [listTodayHabits, setListTodayHabits] = useState([])
     const week = ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"];
     const day = week[dayjs().day()]
-    const { token } = useContext(UserContext)
+    const { token, percentage, setPercentage } = useContext(UserContext)
     const tokenID = !token ? localStorage.getItem("token") : token
+    setPercentage((listTodayHabits.filter(v => v.done).length / listTodayHabits.length)*100)
 
     useEffect(() => {
         const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today"
         const config = { headers: { "Authorization": `Bearer ${tokenID}` } }
         const promise = axios.get(URL, config)
-        promise.then((res) => { setListTodayHabits(res.data); console.log(res.data) })
+        promise.then((res) => setListTodayHabits(res.data))
     }, [])
-
 
     return (
         <Container>
             <HeaderPage />
             <InfoDay>
                 <h2>{day}, {dayjs().format("DD/MM")}</h2>
-                {!listTodayHabits.length > 0 ? <span>Nenhum hábito concluído ainda</span> : <span style={{ color: "#8FC549" }}>67% dos hábitos concluídos</span>}
+                {percentage === 0 ? <span>Nenhum hábito concluído ainda</span> : <span style={{ color: "#8FC549" }}>{percentage.toFixed(0)}% dos hábitos concluídos</span>}
             </InfoDay>
             <ContainerHabits>
-                {listTodayHabits.map((v, i) => <HabitToday setListTodayHabits={setListTodayHabits} id={v.id} token={tokenID} done={v.done} nowSeq={v.currentSequence} name={v.name} key={i} />)}
+                {listTodayHabits.map((v, i) =>
+                    <HabitToday
+                        setPercentage={setPercentage}
+                        listTodayHabits={listTodayHabits}
+                        setListTodayHabits={setListTodayHabits}
+                        id={v.id}
+                        token={tokenID}
+                        done={v.done}
+                        nowSeq={v.currentSequence}
+                        highSeq={v.highestSequence}
+                        name={v.name}
+                        key={i} />
+                )}
             </ContainerHabits>
             <Menu />
         </Container>
@@ -157,6 +177,7 @@ const HabitTodayDesign = styled.div`
         display: flex;
         align-items: center;
         justify-content: center;
+        cursor: pointer;
         ion-icon {
             font-size: 60px;
             color: #FFFFFF;
