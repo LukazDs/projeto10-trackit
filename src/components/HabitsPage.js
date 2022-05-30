@@ -1,11 +1,10 @@
-import HeaderPage from "./HeaderPage";
+import styled from "styled-components";
+import { useEffect, useState, useContext } from "react";
+import axios from "axios";
+import UserContext from "../context/UserContext";
+import Header from "./Header";
 import Menu from "./Menu";
 import CreatedHabit from "./CreatedHabit";
-import styled from "styled-components";
-import { useEffect, useState } from "react";
-import axios from "axios";
-import { useContext } from "react";
-import UserContext from "../context/UserContext";
 import Habits from "./ListHabits";
 
 export default function HabitsPage() {
@@ -24,7 +23,7 @@ export default function HabitsPage() {
 
     return (
         <Container>
-            <HeaderPage />
+            <Header />
             <MakeNewHabit>
                 <span>Meus hábitos</span>
                 <div onClick={() => setCreate(true)}><p>+</p></div>
@@ -45,9 +44,10 @@ export default function HabitsPage() {
 
 const Container = styled.div`
     width: 375px;
-    height: 667px;
+    height: 597px;
     background: #F2F2F2;
     z-index: 0;
+    overflow-y: scroll;
     `;
 
 const MakeNewHabit = styled.div`

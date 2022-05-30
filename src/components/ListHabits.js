@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState, useContext } from "react";
+import { useContext } from "react";
 import styled from "styled-components";
 import UserContext from "../context/UserContext";
 
@@ -64,7 +64,7 @@ export default function Habits() {
 
 const HabitDesign = styled.div`
     width: 340px;
-    height: 91px;
+    height: 110px;
     background: #FFFFFF;
     border-radius: 5px;
     display: flex;
@@ -75,12 +75,13 @@ const HabitDesign = styled.div`
     .topo {
         margin: 10px;
         span {
-        font-family: 'Lexend Deca';
-        font-style: normal;
-        font-weight: 400;
-        font-size: 19.976px;
-        line-height: 25px;
-        color: #666666;
+            font-family: 'Lexend Deca';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 19.976px;
+            line-height: 25px;
+            color: #666666;
+            word-break: break-all;
         }
         ion-icon {
             margin-left: 196px;

@@ -1,9 +1,8 @@
-import HeaderPage from "./HeaderPage";
+import Header from "./Header";
 import Menu from "./Menu";
 import styled from "styled-components";
 import dayjs from "dayjs";
-import { useEffect, useState } from "react";
-import { useContext } from "react";
+import { useEffect, useState, useContext } from "react";
 import UserContext from "../context/UserContext";
 import axios from "axios";
 
@@ -68,7 +67,7 @@ export default function TodayHabits() {
 
     return (
         <Container>
-            <HeaderPage />
+            <Header />
             <InfoDay>
                 <h2>{day}, {dayjs().format("DD/MM")}</h2>
                 {percentage === 0 ? <span>Nenhum hábito concluído ainda</span> : <span style={{ color: "#8FC549" }}>{percentage.toFixed(0)}% dos hábitos concluídos</span>}

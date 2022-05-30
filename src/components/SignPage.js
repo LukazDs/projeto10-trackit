@@ -4,7 +4,6 @@ import logo from "../assets/images/logo.svg";
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import Loading from './loaders/Loading';
-import { useContext } from 'react';
 import UserContext from '../context/UserContext';
 
 export default function SignPage() {
@@ -15,7 +14,7 @@ export default function SignPage() {
     const [password, setPassword] = React.useState("")
     const [isLoading, setIsLoading] = React.useState(false)
     const navigate = useNavigate()
-    const {setImage} = useContext(UserContext)
+    const {setImage} = React.useContext(UserContext)
 
     function login(event) {
         event.preventDefault()

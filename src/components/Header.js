@@ -2,19 +2,19 @@ import styled from "styled-components"
 import { useContext } from "react";
 import UserContext from "../context/UserContext";
 
-export default function HeaderPage() {
+export default function Header() {
 
     const { image } = useContext(UserContext)
 
     return (
-        <Header>
+        <Top>
             <span>TrackIt</span>
             <img src={(image.length !== 0) ? image : localStorage.getItem("image")} alt={image}/>
-        </Header>
+        </Top>
     )
 }
 
-const Header = styled.div`
+const Top = styled.div`
     width: 375px;
     height: 70px;
     display: flex;

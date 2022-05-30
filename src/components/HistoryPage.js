@@ -1,11 +1,11 @@
-import HeaderPage from "./HeaderPage";
+import Header from "./Header";
 import Menu from "./Menu";
 import styled from "styled-components";
 
 export default function HistoryPage() {
     return (
         <Container>
-            <HeaderPage />
+            <Header />
             <HistoryDesign>
                 <h2>
                     Histórico
@@ -22,11 +22,12 @@ export default function HistoryPage() {
 
 const Container = styled.div`
     width: 375px;
-    height: 667px;
+    height: 597px;
     background: #F2F2F2;
     z-index: 0;
     display: flex;
     justify-content: center;
+    overflow-y: scroll;
     `;
 
 const HistoryDesign = styled.div`
