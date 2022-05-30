@@ -1,6 +1,7 @@
 import HeaderPage from "./HeaderPage";
 import Menu from "./Menu";
 import styled from "styled-components";
+import dayjs from "dayjs";
 
 function HabitToday() {
 
@@ -25,11 +26,16 @@ function HabitToday() {
 }
 
 export default function TodayHabits() {
+
+    const week = ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"];
+    
+    const day = week[dayjs().day()]
+
     return (
         <Container>
             <HeaderPage />
             <InfoDay>
-                <h2>Segunda, 17/05</h2>
+                <h2>{day}, {dayjs().format("DD/MM")}</h2>
                 <span>Nenhum hábito concluído ainda</span>
             </InfoDay>
             <ContainerHabits>
