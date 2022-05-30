@@ -2,24 +2,30 @@ import HeaderPage from "./HeaderPage";
 import Menu from "./Menu";
 import styled from "styled-components";
 import dayjs from "dayjs";
+import { useEffect, useState } from "react";
+import { useContext } from "react";
+import UserContext from "../context/UserContext";
+import axios from "axios";
 
-function HabitToday() {
+function HabitToday({ name }) {
+
+    const [clicked, setClicked] = useState(false)
 
     return (
         <HabitTodayDesign>
             <div className="text-habit">
-                <h3>Ler 1 capítulo de livro</h3>
+                <h3>{name}</h3>
                 <div>
                     <p>Sequência atual: 3 dias</p>
                     <p>Seu recorde: 5 dias</p>
                 </div>
-
             </div>
-
-            <div className="verification">
+            <div
+                onClick={() => setClicked(!clicked)}
+                className="verification"
+                style={{ background: `${!clicked ? "#EBEBEB" : "#8FC549"}` }}>
                 <ion-icon name="checkmark-sharp"></ion-icon>
             </div>
-
         </HabitTodayDesign>
     )
 
@@ -27,19 +33,29 @@ function HabitToday() {
 
 export default function TodayHabits() {
 
+    const [listTodayHabits, setListTodayHabits] = useState([])
     const week = ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"];
-    
     const day = week[dayjs().day()]
+    const { token } = useContext(UserContext)
+    const tokenID = !token ? localStorage.getItem("token") : token
+
+    useEffect(() => {
+        const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today"
+        const config = { headers: { "Authorization": `Bearer ${tokenID}` } }
+        const promise = axios.get(URL, config)
+        promise.then((res) => { setListTodayHabits(res.data) })
+    }, [])
+
 
     return (
         <Container>
             <HeaderPage />
             <InfoDay>
                 <h2>{day}, {dayjs().format("DD/MM")}</h2>
-                <span>Nenhum hábito concluído ainda</span>
+                {!listTodayHabits.length > 0 ? <span>Nenhum hábito concluído ainda</span> : <span style={{ color: "#8FC549" }}>67% dos hábitos concluídos</span>}
             </InfoDay>
             <ContainerHabits>
-                <HabitToday />
+                {listTodayHabits.map((v, i) => <HabitToday name={v.name} key={i} />)}
             </ContainerHabits>
             <Menu />
         </Container>
